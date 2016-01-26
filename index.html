@@ -25,6 +25,7 @@
   <script src="js/b58.js"></script>
   <script src="js/clipboard.min.js"></script>
   <script src="js/parseuri.js"></script>
+  <script src="js/jquery-2.2.0.min.js"></script> 
 </head>
 
 <body>
@@ -43,7 +44,7 @@
 
     <div class="row">
         <div class="twelve columns">
-<button class="button-primary" onclick="main()" data-clipboard-target="#input">
+<button id="generate" class="button-primary" data-clipboard-target="#input">
 Generate password
 </button>
         </div>
@@ -56,12 +57,12 @@ Generate password
 var clipboard = new Clipboard('.button-primary');
 
 clipboard.on('success', function(e) {
-    document.getElementById("input").value = "Copied to clipboard"
+    $("#input").val("Copied to clipboard")
 });
 
-function main() {
+$( "#generate" ).click(function() {
 
-    input = document.getElementById("input").value
+    input = $("#input").val()
 
     if (input.substring(0, 1) == "$" &&
         input.substring(input.length - 1, input.length) == "$") {
@@ -85,8 +86,9 @@ function main() {
     var b58 = encodex(decodex(hash, "0123456789abcdef"), "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz")
     var passwd = "!" + b58.substring(0, 20)
 
-    document.getElementById("input").value = passwd
-}
+    $("#input").val(passwd)
+
+});
 
 </script>
 </body>
