@@ -24,6 +24,7 @@
   <script src="js/hmac-sha256.js"></script>
   <script src="js/b58.js"></script>
   <script src="js/clipboard.min.js"></script>
+  <script src="js/parseuri.js"></script>
 
 </head>
 
@@ -33,6 +34,7 @@
 Copy password to clipboard
 </button>
 <input id="input" value="" />
+
 <script>
 
 var clipboard = new Clipboard('.btn');
@@ -50,6 +52,11 @@ function main() {
         localStorage.masterKey = input
         alert("Master key set")
         return
+    }
+
+    if (input.substring(0,4)=="http") {
+        pu = parseUri(input)
+        input = pu.host
     }
 
     masterKey = localStorage.masterKey
