@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title>Minimal Password Manager</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/skeleton.css">
+
+  <!-- Scripts
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <script src="js/hmac-sha256.js"></script>
+  <script src="js/b58.js"></script>
+  <script src="js/clipboard.min.js"></script>
+
+</head>
+
+<body>
+
+<button class="btn" onclick="main()" data-clipboard-target="#input">
+Copy password to clipboard
+</button>
+<input id="input" value="" />
+<script>
+
+var clipboard = new Clipboard('.btn');
+
+clipboard.on('success', function(e) {
+    document.getElementById("input").value = "Clipboard"
+});
+
+function main() {
+
+    input = document.getElementById("input").value
+
+    if (input.substring(0, 1) == "$" &&
+        input.substring(input.length - 1, input.length) == "$") {
+        localStorage.masterKey = input
+        alert("Master key set")
+        return
+    }
+
+    masterKey = localStorage.masterKey
+
+    if (masterKey == undefined) {
+        alert("Masterkey not set")
+    }
+
+    var hash = "" + CryptoJS.HmacSHA256(input, masterKey)
+    var b58 = encodex(decodex(hash, "0123456789abcdef"), "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz")
+    var passwd = "!" + b58.substring(0, 20)
+
+    document.getElementById("input").value = passwd
+}
+
+</script>
+</body>
+
+</html>
+
+
