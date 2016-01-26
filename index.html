@@ -44,8 +44,12 @@
 
     <div class="row">
         <div class="twelve columns">
-<button id="generate" class="button-primary" data-clipboard-target="#input">
+            <div id="generatediv">
+            <button id="generate" class="button-primary" data-clipboard-target="#input">
 Generate password
+</button></div>
+ <button id="master">
+Set masterkey
 </button>
         </div>
     </div>
@@ -60,26 +64,32 @@ clipboard.on('success', function(e) {
     $("#input").val("Copied to clipboard")
 });
 
-$( "#generate" ).click(function() {
+$( "#master" ).click(function() {
 
-    input = $("#input").val()
+    input = $("#input").val().trim()
 
-    if (input.substring(0, 1) == "$" &&
-        input.substring(input.length - 1, input.length) == "$") {
-        localStorage.masterKey = input
-        alert("Master key set")
+    if (input.substring(0, 1) != "$" ||
+        input.substring(input.length - 1, input.length) != "$") {
+        alert("Bad master key")
         return
     }
+    localStorage.masterKey = input
+    alert("Masterkey set")
+})
 
-    if (input.substring(0,4)=="http") {
-        pu = parseUri(input)
-        input = pu.host
-    }
+$( "#generate" ).click(function() {
 
     masterKey = localStorage.masterKey
 
     if (masterKey == undefined) {
         alert("Masterkey not set")
+    }
+
+    input = $("#input").val().trim()
+
+    if (input.substring(0,4)=="http") {
+        pu = parseUri(input)
+        input = pu.host
     }
 
     var hash = "" + CryptoJS.HmacSHA256(input, masterKey)
@@ -89,6 +99,7 @@ $( "#generate" ).click(function() {
     $("#input").val(passwd)
 
 });
+
 
 </script>
 </body>
