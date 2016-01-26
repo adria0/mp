@@ -25,22 +25,38 @@
   <script src="js/b58.js"></script>
   <script src="js/clipboard.min.js"></script>
   <script src="js/parseuri.js"></script>
-
 </head>
 
 <body>
 
-<button class="btn" onclick="main()" data-clipboard-target="#input">
-Copy password to clipboard
+<div class="container">
+   <div class="row">
+        <div class="twelve columns">
+        <h4>Minimal password</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="twelve columns">
+<input  type="text" placeholder="site here" id="input">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="twelve columns">
+<button class="button-primary" onclick="main()" data-clipboard-target="#input">
+Generate password
 </button>
-<input id="input" value="" />
+        </div>
+    </div>
+
+    </div>
 
 <script>
 
-var clipboard = new Clipboard('.btn');
+var clipboard = new Clipboard('.button-primary');
 
 clipboard.on('success', function(e) {
-    document.getElementById("input").value = "Clipboard"
+    document.getElementById("input").value = "Copied to clipboard"
 });
 
 function main() {
