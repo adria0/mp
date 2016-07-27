@@ -89,7 +89,7 @@ $( "#master" ).click(function() {
     alert("Masterkey set")
 })
 
-$( "#generate" ).click(function() {
+function generate() {
 
     masterKey = localStorage.masterKey
 
@@ -110,7 +110,17 @@ $( "#generate" ).click(function() {
 
     $("#input").val(passwd)
 
+}
+
+$( "#generate" ).click(function() {
+  generate()
 });
+
+$(document).keypress(function(e) {
+    if(e.which == 13) {
+        generate()
+    }
+})
 
 $("#input").focus();
 
